@@ -8,6 +8,8 @@ def main(page: ft.Page):
         page.views.clear()
         page.views.append(views_handler(page)[page.route])
 
+        page.fonts = {"abeezee": "fonts/ABeeZee-Regular"}
+
     page.on_route_change = route_change
 
     page.go("/login")
