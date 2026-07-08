@@ -8,7 +8,7 @@ from postgres.database import test_connection
 
 
 def main(page: ft.Page):
-    test_connection()
+    # test_connection()
 
     page.bgcolor = "white"
     page.padding = ft.Padding.all(0)

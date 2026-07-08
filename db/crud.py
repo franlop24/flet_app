@@ -24,3 +24,12 @@ def check_data_exists(conn, table_name, condition):
     cursor = conn.cursor()
     cursor.execute(f"SELECT EXISTS (SELECT 1 FROM {table_name} WHERE {condition})")
     return cursor.fetchone()[0] == 1
+
+
+def isert_data(conn, table_name, values):
+    cursor = conn.cursor()
+    cursor.execute(
+        f"INSERT INTO {table_name} (first_name, last_name, email, password) VALUES (?, ?, ?, ?)",
+        values,
+    )
+    conn.commit()
