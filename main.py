@@ -1,14 +1,17 @@
 import flet as ft
 
+from db.db import create_database
 from pages.authentication.login import Login
 from pages.authentication.signup import SignUp
-from postgres.database import test_connection
+
+# from postgres.database import test_connection
 
 # from router import views_handler
 
 
 def main(page: ft.Page):
     # test_connection()
+    create_database()
 
     page.bgcolor = "white"
     page.padding = ft.Padding.all(0)
@@ -26,7 +29,7 @@ def main(page: ft.Page):
 
     page.on_route_change = route_change
 
-    page.go("/login")
+    page.navigate("/login")
 
 
 ft.app(target=main, assets_dir="assets")

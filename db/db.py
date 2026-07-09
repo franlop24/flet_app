@@ -6,7 +6,7 @@ from db import db_path
 def table_exists(conn, table_name):
     cursor = conn.cursor()
     cursor.execute(
-        "SELECT name FROM sqlite_master WHERE type='table' AND name=?", {table_name}
+        "SELECT name FROM sqlite_master WHERE type='table' AND name=?", (table_name,)
     )
     return cursor.fetchone() is not None
 
@@ -20,11 +20,11 @@ def create_database():
 
         cursor.execute("""
             CREATE TABLE user (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            id INTEGER PRIMARY KEY,
             first_name TEXT NOT NULL,
             last_name TEXT NOT NULL,
             email TEXT NOT NULL UNIQUE,
-            password TEXT NOT NULL,
+            password TEXT NOT NULL
             )
             """)
 
@@ -36,11 +36,11 @@ def create_database():
 
         cursor.execute("""
             CREATE TABLE user (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            id INTEGER PRIMARY KEY,
             first_name TEXT NOT NULL,
             last_name TEXT NOT NULL,
             email TEXT NOT NULL UNIQUE,
-            password TEXT NOT NULL,
+            password TEXT NOT NULL
             )
             """)
 

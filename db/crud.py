@@ -26,7 +26,7 @@ def check_data_exists(conn, table_name, condition):
     return cursor.fetchone()[0] == 1
 
 
-def isert_data(conn, table_name, values):
+def insert_data(conn, table_name, values):
     cursor = conn.cursor()
     cursor.execute(
         f"INSERT INTO {table_name} (first_name, last_name, email, password) VALUES (?, ?, ?, ?)",

@@ -4,7 +4,7 @@ import flet as ft
 
 
 from db import db_path
-from db.crud import connect_to_database
+from db.crud import check_data_exists, connect_to_database, insert_data
 from utils.colors import customTextHeaderColor, customBorderColor, customPrimaryColor
 from components.fields import CustomTextField
 from utils.validation import Validation
@@ -24,17 +24,12 @@ class SignUp(ft.Container):
         self.first_name = ft.Container(
             padding=ft.Padding.all(4),
             content=CustomTextField(label="First Name"),
-            border=ft.Border.all(width=1, color=customBorderColor),
+            border=ft.Border.all(1, customBorderColor),
         )
         self.surname = ft.Container(
             padding=ft.Padding.all(4),
             content=CustomTextField(label="Surname"),
-            border=ft.Border.all(width=1, color=customBorderColor),
-        )
-        self.email = ft.Container(
-            padding=ft.Padding.all(4),
-            content=CustomTextField(label="Email"),
-            border=ft.Border.all(1, ft.Colors.RED),
+            border=ft.Border.all(1, customBorderColor),
         )
         self.email = ft.Container(
             padding=ft.Padding.all(4),
@@ -46,14 +41,14 @@ class SignUp(ft.Container):
             content=CustomTextField(
                 label="Password", password=True, can_reveal_password=True
             ),
-            border=ft.Border.all(width=1, color=customBorderColor),
+            border=ft.Border.all(1, customBorderColor),
         )
         self.confirm_password = ft.Container(
             padding=ft.Padding.all(4),
             content=CustomTextField(
                 label="Confirm Password", password=True, can_reveal_password=True
             ),
-            border=ft.Border.all(width=1, color=customBorderColor),
+            border=ft.Border.all(1, customBorderColor),
         )
 
         self.content = ft.Row(
@@ -94,7 +89,7 @@ class SignUp(ft.Container):
                                 content=ft.Text(
                                     "Have an Account/Login", color=customTextHeaderColor
                                 ),
-                                on_click=lambda e: page.go("/login"),
+                                on_click=lambda e: page.navigate("/login"),
                             ),
                         ],
                     ),
@@ -139,10 +134,37 @@ class SignUp(ft.Container):
             conn = connect_to_database(db_path)
 
             if not self.validation.is_valid_email(email):
-                self.email.border = ft.Colors.RED
+                self.email.border = self.error_border
                 self.error_field.value = "Enter a valid email"
                 self.error_field.size = 12
                 self.error_field.update()
+                self.email.update()
+
+                await asyncio.sleep(1)
+                self.email.border = self.default_border
+                self.error_field.size = 0
+                self.error_field.update()
+                self.email.update()
+
+            elif not check_data_exists(conn, "user", f"email='{email}'"):
+                insert_data(conn, "user", (first_name, surname, email, password))
+                self.page.splash = ft.ProgressBar()
+                self.error_field.value = "You have succefully been registered"
+                self.error_field.color = "green"
+                self.error_field.size = 12
+                self.page.update()
+
+                await asyncio.sleep(1)
+                self.page.splash = None
+                self.page.update()
+                self.page.navigate("/login")
+
+            else:
+                self.email.border = self.error_border
+                self.error_field.value = "Email already exists"
+                self.error_field.size = 12
+                self.error_field.update()
+                self.email.update()
 
                 await asyncio.sleep(1)
                 self.email.border = self.default_border

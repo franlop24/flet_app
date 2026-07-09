@@ -55,7 +55,7 @@ class Login(ft.Container):
                                 content=ft.Text(
                                     "Create new account", color=customTextHeaderColor
                                 ),
-                                on_click=lambda e: page.go("/signup"),
+                                on_click=lambda e: page.navigate("/signup"),
                             ),
                         ],
                     ),
