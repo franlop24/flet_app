@@ -6,7 +6,7 @@ customTextHeaderColor = "black"
 
 # side bar
 customSidebarIconColor = "#868E96"
-custonDashboardBg = "#FAFDFB"
+customDashboardBG = "#FAFDFB"
 
 # Border Color
 customBorderColor = "#868E96"
