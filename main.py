@@ -3,6 +3,7 @@ import flet as ft
 from db.db import create_database
 from pages.authentication.login import Login
 from pages.authentication.signup import SignUp
+from pages.dashboard.dashboard import Dashboard
 
 # from postgres.database import test_connection
 
@@ -24,6 +25,9 @@ def main(page: ft.Page):
 
         if page.route == "/signup":
             page.add(SignUp(page))
+
+        if page.route == "/":
+            page.add(Dashboard(page))
 
         page.fonts = {"abeezee": "fonts/ABeeZee-Regular"}
 

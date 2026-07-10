@@ -14,7 +14,7 @@ class SignUp(ft.Container):
     def __init__(self, page: ft.Page):
         super().__init__()
 
-        self.bgcolor = "white"
+        # self.bgcolor = "white"
         self.expand = True
         self.validation = Validation()
         self.error_border = ft.Border.all(3, "red")

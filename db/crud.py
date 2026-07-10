@@ -16,8 +16,20 @@ def get_data(conn, table_name, conditions=None):
 
     rows = cursor.fetchall()
     columns = [col[0] for col in cursor.description]
-    result = [{columns[i]: row[i]} for i in range(len(columns)) for row in rows]
-    return result
+
+    # result = [{columns[i]: row[i]} for i in range(len(columns)) for row in rows]
+    # return result
+
+    results = []
+    for row in rows:
+        row_dict = {}
+
+        for i in range(len(columns)):
+            row_dict[columns[i]] = row[i]
+
+        results.append(row_dict)
+
+    return results
 
 
 def check_data_exists(conn, table_name, condition):
