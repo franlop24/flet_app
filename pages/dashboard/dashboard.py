@@ -1,6 +1,7 @@
 import flet as ft
 import flet_charts as fch
 
+from base.sidebar import SideBar
 from components.cards import CustomDisplayCard
 from utils.colors import customDashboardBG, customTextHeaderColor, customPrimaryColor
 
@@ -11,6 +12,7 @@ class Dashboard(ft.Container):
 
         self.expand = True
         self.bgcolor = customDashboardBG
+        self.sidebar = SideBar(page)
 
         self.main_content = ft.Column(
             controls=[
@@ -137,5 +139,9 @@ class Dashboard(ft.Container):
         )
 
         self.content = ft.Row(
-            spacing=0, controls=[ft.Container(expand=True, content=self.main_content)]
+            spacing=0,
+            controls=[
+                self.sidebar,
+                ft.Container(expand=True, content=self.main_content),
+            ],
         )
