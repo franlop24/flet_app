@@ -1,5 +1,7 @@
 import os
 from contextlib import contextmanager
+from typing import Any
+
 from sqlalchemy import create_engine, text
 
 from dotenv import load_dotenv
@@ -55,3 +57,25 @@ def test_connection():
         print(f" [ERROR] No se pudo conectar a la base de datos.")
         print(f" Detalles del error: {e}")
         return False
+
+
+def execute_select_query(query: str) -> dict[str, Any]:
+    """
+    Ejecuta una consulta de lectura en PostgreSQL y devuelve un diccionario
+    con las columnas y las filas obtenidas.
+
+    Ejemplo:
+        execute_select_query("SELECT id, name FROM users")
+        -> {"columns": ["id", "name"], "rows": [{"id": 1, "name": "Ana"}]}
+    """
+    if not query or not query.strip():
+        raise ValueError("La consulta SQL no puede estar vacía.")
+
+    normalized_query = query.strip().upper()
+    if not normalized_query.startswith(("SELECT", "WITH")):
+        raise ValueError("Solo se permiten consultas de lectura (SELECT o WITH).")
+
+    with get_db_connection() as conn:
+        result = conn.execute(text(query))
+        rows = [dict(row) for row in result.mappings().all()]
+        return {"columns": list(result.keys()), "rows": rows}

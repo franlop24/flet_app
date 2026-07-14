@@ -11,7 +11,7 @@ class CustomDisplayCard(ft.Container):
         self.title = title
         self.value = value
 
-        self.shadow = ft.BoxShadow(spread_radius=1, blur_radius=5, color="black")
+        self.shadow = ft.BoxShadow(spread_radius=0.5, blur_radius=0.5, color="1a000000")
 
         self.width = 250
         self.height = 80
